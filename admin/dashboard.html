@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Finriseassets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --bg:#050505;--bg2:#0b0b0b;--sidebar:#080808;--card:rgba(20,18,12,.94);
+ --card2:#17130a;--border:rgba(212,175,55,.16);--text:#f8f5ea;--muted:#9f9887;
+ --gold:#d4af37;--gold2:#f2cf61;--green:#27c997;--yellow:#f2c94c;
+ --red:#ff6676;--blue:#6da8ff;--purple:#a78bfa;
+ --shadow:0 20px 55px rgba(0,0,0,.45)
+}
+html{scroll-behavior:smooth}
+body{
+ font-family:"Inter",sans-serif;background:
+ radial-gradient(circle at 15% 0%,rgba(212,175,55,.10),transparent 28%),
+ radial-gradient(circle at 90% 15%,rgba(212,175,55,.06),transparent 30%),
+ linear-gradient(135deg,#020202,#0a0906 55%,#030303);color:var(--text);min-height:100vh
+}
+button,input,select,textarea{font-family:inherit}button{cursor:pointer}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:255px;background:rgba(5,5,5,.97);border-right:1px solid var(--border);z-index:1000;display:flex;flex-direction:column}
+.brand{height:78px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--border)}
+.brand-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#f0cf61,#9c7620);display:grid;place-items:center;margin-right:11px;box-shadow:0 10px 30px rgba(212,175,55,.2)}
+.brand-icon i{color:#080705;font-size:19px}
+.brand-text strong{display:block;font-size:15px;letter-spacing:.5px}
+.brand-text span{color:var(--gold2);font-size:10px;font-weight:800;letter-spacing:1.5px}
+.menu{padding:18px 12px;overflow-y:auto}
+.menu-title{color:#6f6755;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:12px}
+.menu-item{width:100%;border:0;background:transparent;color:#aaa292;padding:12px 13px;margin-bottom:4px;border-radius:10px;display:flex;align-items:center;gap:13px;text-align:left;font-size:13px;transition:.2s}
+.menu-item i{width:19px;text-align:center}
+.menu-item:hover,.menu-item.active{color:#fff;background:rgba(212,175,55,.10)}
+.menu-item.active{border-left:3px solid var(--gold);padding-left:10px}
+.menu-item .badge{margin-left:auto;min-width:21px;height:21px;border-radius:50%;background:var(--gold);color:#0a0803;font-size:10px;font-weight:800;display:grid;place-items:center}
+.sidebar-bottom{margin-top:auto;padding:15px;border-top:1px solid var(--border)}
+.admin-mini{display:flex;align-items:center;gap:10px;padding:10px}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#f0cf61,#8b681d);color:#080705;font-weight:800;font-size:13px}
+.admin-mini strong{display:block;font-size:12px}.admin-mini span{color:var(--muted);font-size:10px}
+.main{margin-left:255px;min-height:100vh}
+.topbar{height:78px;padding:0 30px;border-bottom:1px solid var(--border);background:rgba(5,5,5,.78);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:900}
+.page-title h1{font-size:20px;margin-bottom:4px}.page-title p{color:var(--muted);font-size:11px}
+.top-actions{display:flex;align-items:center;gap:12px}.icon-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--border);color:#b8ad96;background:rgba(255,255,255,.025);position:relative}
+.icon-btn:hover{color:#fff;border-color:rgba(212,175,55,.45)}.notification-dot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.mobile-menu{display:none}
+.content{padding:30px}.section{display:none}.section.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.welcome{margin-bottom:25px}.welcome h2{font-size:24px;margin-bottom:6px}.welcome p{color:var(--muted);font-size:13px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.stat-card{background:linear-gradient(145deg,rgba(29,25,14,.96),rgba(12,12,10,.96));border:1px solid var(--border);border-radius:15px;padding:19px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.stat-card::after{content:"";position:absolute;width:90px;height:90px;right:-35px;bottom:-40px;border-radius:50%;background:rgba(212,175,55,.08)}
+.stat-top{display:flex;justify-content:space-between;align-items:center}.stat-icon{width:39px;height:39px;border-radius:11px;display:grid;place-items:center;background:rgba(212,175,55,.11);color:var(--gold2)}
+.stat-label{color:var(--muted);font-size:11px;margin-bottom:8px}.stat-value{font-size:22px;font-weight:800;letter-spacing:-.5px}.stat-change{margin-top:10px;font-size:10px}.up{color:var(--green)}.down{color:var(--red)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:15px;box-shadow:var(--shadow)}
+.card-header{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.card-header h3{font-size:14px}.card-header span{color:var(--muted);font-size:11px}
+.dashboard-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin-bottom:20px}
+.chart-box{padding:20px;height:290px}.fake-chart{height:205px;display:flex;align-items:end;gap:9px;padding:20px 5px 0}
+.bar{flex:1;background:linear-gradient(to top,#6e5314,#f1d05d);border-radius:5px 5px 0 0;opacity:.9;min-height:20px;transition:.25s}
+.bar:hover{filter:brightness(1.25);transform:translateY(-2px)}.chart-labels{display:flex;justify-content:space-between;color:#756e60;font-size:9px;margin-top:8px}
+.activity{padding:10px 20px}.activity-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05)}.activity-item:last-child{border-bottom:0}
+.activity-icon{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:12px}.activity-info{flex:1}.activity-info strong{display:block;font-size:11px}.activity-info span{display:block;color:var(--muted);font-size:9px;margin-top:3px}.activity-amount{font-size:11px;font-weight:700}
+.table-card{overflow:hidden}.table-tools{padding:15px 20px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--border)}
+.search-box{flex:1;position:relative}.search-box i{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#756d5d;font-size:12px}
+.search-box input{width:100%;background:#0b0a07;border:1px solid var(--border);border-radius:9px;padding:10px 12px 10px 35px;color:#fff;outline:none;font-size:11px}
+.filter-select{background:#0b0a07;border:1px solid var(--border);color:#c2b9a6;padding:10px;border-radius:9px;outline:none;font-size:11px}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:750px}th{padding:13px 20px;color:#766e60;font-size:9px;text-align:left;text-transform:uppercase;letter-spacing:.7px;background:rgba(255,255,255,.015)}
+td{padding:14px 20px;border-top:1px solid rgba(255,255,255,.045);font-size:11px;color:#cec8bb}tr:hover td{background:rgba(212,175,55,.025)}
+.user-cell{display:flex;align-items:center;gap:9px}.user-avatar{width:31px;height:31px;border-radius:9px;display:grid;place-items:center;font-size:10px;font-weight:800;background:linear-gradient(135deg,#5d4817,#b99738);color:#fff}
+.user-name strong{display:block;color:#fff;font-size:10px}.user-name span{color:#746d5f;font-size:9px}
+.status{display:inline-flex;padding:5px 8px;border-radius:20px;font-size:8px;font-weight:800}.status.approved,.status.active{background:rgba(39,201,151,.1);color:#42dcb1}.status.pending{background:rgba(242,201,76,.1);color:#f4cf58}.status.rejected,.status.inactive{background:rgba(255,102,118,.1);color:#ff7180}.status.completed{background:rgba(109,168,255,.1);color:#76afff}
+.actions{display:flex;gap:5px}.small-btn{border:1px solid var(--border);background:rgba(255,255,255,.025);color:#aaa08d;border-radius:7px;width:29px;height:29px;font-size:10px}.small-btn:hover{color:#fff;border-color:rgba(212,175,55,.5)}.approve{color:#40d9ae}.reject{color:#ff6878}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-size:10px;font-weight:700;color:#fff}.btn-primary{background:linear-gradient(135deg,#e2c451,#a47d20);color:#090704}.btn-primary:hover{filter:brightness(1.1)}.btn-danger{background:rgba(255,92,108,.12);color:#ff6d7c}.btn-secondary{background:rgba(255,255,255,.06);border:1px solid var(--border);color:#d0c7b6}
+.referral-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.referral-tree{padding:25px}.tree-user{display:flex;align-items:center;gap:10px;margin:13px 0}.tree-line{border-left:1px solid #59491f;margin-left:15px;padding-left:25px}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.plan-card{padding:20px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(145deg,#1c170c,#0b0b09)}.plan-card h3{font-size:14px}.plan-roi{font-size:27px;font-weight:800;color:var(--gold2);margin:15px 0}.plan-row{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:5000;display:none;place-items:center;padding:20px}.modal.show{display:grid}.modal-box{width:100%;max-width:480px;background:#11100c;border:1px solid var(--border);border-radius:16px;box-shadow:0 30px 100px rgba(0,0,0,.7);overflow:hidden}
+.modal-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.modal-header h3{font-size:14px}.close-modal{background:transparent;border:0;color:#918875;font-size:18px}.modal-body{padding:20px}.form-group{margin-bottom:14px}.form-group label{display:block;font-size:10px;color:#a89e8a;margin-bottom:6px}.form-group input,.form-group textarea,.form-group select{width:100%;background:#080806;border:1px solid var(--border);border-radius:8px;padding:11px;color:#fff;outline:none;font-size:11px}.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:15px 20px;border-top:1px solid var(--border)}
+.toast{position:fixed;right:25px;bottom:25px;padding:13px 18px;border-radius:10px;background:#181407;border:1px solid rgba(212,175,55,.35);color:#fff;font-size:11px;z-index:9000;transform:translateY(100px);opacity:0;transition:.3s;box-shadow:0 15px 40px rgba(0,0,0,.4)}.toast.show{transform:translateY(0);opacity:1}
+.empty-state{text-align:center;padding:45px 20px;color:var(--muted)}.empty-state i{font-size:28px;color:var(--gold);margin-bottom:12px}.empty-state h3{color:#eee;margin-bottom:6px;font-size:14px}
+@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr)}.dashboard-grid{grid-template-columns:1fr}.plans{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.sidebar{transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:grid;place-items:center;margin-right:10px}.topbar{padding:0 15px}.content{padding:18px 14px}.stats-grid{grid-template-columns:1fr 1fr;gap:10px}.stat-card{padding:14px}.stat-value{font-size:17px}.referral-grid,.plans{grid-template-columns:1fr}.page-title h1{font-size:16px}.page-title p{display:none}.table-tools{flex-wrap:wrap}.search-box{flex-basis:100%}}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr}.welcome h2{font-size:20px}}
+</style>
+<link rel="manifest" href="/admin/manifest.json">
+<meta name="theme-color" content="#0b0b0b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="/admin/icons/icon-192.png">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+<div class="brand"><div class="brand-icon"><i class="fa-solid fa-chart-line"></i></div><div class="brand-text"><strong>FINRISEASSETS</strong><span>ADMIN CENTER</span></div></div>
+<nav class="menu">
+<div class="menu-title">Main</div>
+<button class="menu-item active" data-section="dashboard"><i class="fa-solid fa-table-cells-large"></i>Dashboard</button>
+<button class="menu-item" data-section="users"><i class="fa-solid fa-users"></i>Users</button>
+<button class="menu-item" data-section="deposits"><i class="fa-solid fa-circle-arrow-down"></i>Deposits <span class="badge" id="depositBadge">4</span></button>
+<button class="menu-item" data-section="withdrawals"><i class="fa-solid fa-circle-arrow-up"></i>Withdrawals <span class="badge" id="withdrawalBadge">7</span></button>
+<div class="menu-title">Finance</div>
+<button class="menu-item" data-section="investments"><i class="fa-solid fa-chart-pie"></i>Investments</button>
+<button class="menu-item" data-section="active"><i class="fa-solid fa-spinner"></i>Active Investments</button>
+<button class="menu-item" data-section="transactions"><i class="fa-solid fa-receipt"></i>Transactions</button>
+<div class="menu-title">Platform</div>
+<button class="menu-item" data-section="referrals"><i class="fa-solid fa-share-nodes"></i>Referrals</button>
+<button class="menu-item" data-section="notifications"><i class="fa-solid fa-bell"></i>Notifications <span class="badge">3</span></button>
+<button class="menu-item" data-section="audit"><i class="fa-solid fa-shield-halved"></i>Admin Activity</button>
+<button class="menu-item" data-section="settings"><i class="fa-solid fa-gear"></i>Settings</button>
+</nav>
+<div class="sidebar-bottom">
+<div class="admin-mini"><div class="avatar">AD</div><div><strong>Administrator</strong><span>Super Admin</span></div></div>
+<button class="menu-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
+</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+<div style="display:flex;align-items:center"><button class="icon-btn mobile-menu" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button><div class="page-title"><h1 id="pageTitle">Dashboard</h1><p>Manage your Finriseassets investment platform</p></div></div>
+<div class="top-actions"><button class="icon-btn" onclick="showToast('No new system alerts')"><i class="fa-regular fa-bell"></i><span class="notification-dot"></span></button><button class="icon-btn" onclick="refreshDashboard()"><i class="fa-solid fa-rotate"></i></button></div>
+</header>
+
+<div class="content">
+
+<section class="section active" id="dashboard">
+<div class="welcome"><h2>Good evening, Admin 👋</h2><p>Here's what's happening across Finriseassets today.</p></div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-top"><div><div class="stat-label">Total Users</div><div class="stat-value" id="totalUsers">12,486</div></div><div class="stat-icon"><i class="fa-solid fa-users"></i></div></div><div class="stat-change up"><i class="fa-solid fa-arrow-up"></i> 8.4% this month</div></div>
+<div class="stat-card"><div class="stat-top"><div><div class="stat-label">Total Deposits</div><div class="stat-value" id="totalDeposits">₦48.7M</div></div><div class="stat-icon"><i class="fa-solid fa-wallet"></i></div></div><div class="stat-change up"><i class="fa-solid fa-arrow-up"></i> 12.8% this month</div></div>
+<div class="stat-card"><div class="stat-top"><div><div class="stat-label">Total Withdrawals</div><div class="stat-value">₦19.3M</div></div><div class="stat-icon"><i class="fa-solid fa-money-bill-transfer"></i></div></div><div class="stat-change down"><i class="fa-solid fa-arrow-down"></i> 3.2% this month</div></div>
+<div class="stat-card"><div class="stat-top"><div><div class="stat-label">Total Invested</div><div class="stat-value">₦35.2M</div></div><div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div></div><div class="stat-change up"><i class="fa-solid fa-arrow-up"></i> 15.6% this month</div></div>
+</div>
+
+<div class="dashboard-grid">
+<div class="card"><div class="card-header"><div><h3>Platform Overview</h3><span>Financial activity — last 7 days</span></div><select class="filter-select" onchange="showToast('Chart range changed to '+this.value)"><option>Last 7 Days</option><option>Last 30 Days</option><option>Last 12 Months</option></select></div>
+<div class="chart-box"><div class="fake-chart">
+<div class="bar" style="height:35%"></div><div class="bar" style="height:52%"></div><div class="bar" style="height:43%"></div><div class="bar" style="height:68%"></div><div class="bar" style="height:57%"></div><div class="bar" style="height:82%"></div><div class="bar" style="height:72%"></div><div class="bar" style="height:92%"></div><div class="bar" style="height:77%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:96%"></div><div class="bar" style="height:83%"></div>
+</div><div class="chart-labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div></div></div>
+<div class="card"><div class="card-header"><div><h3>Recent Activity</h3><span>Latest platform actions</span></div></div><div class="activity" id="activityList">
+<div class="activity-item"><div class="activity-icon" style="background:rgba(39,201,151,.1);color:#42dcb1"><i class="fa-solid fa-arrow-down"></i></div><div class="activity-info"><strong>Deposit approved</strong><span>Okereke Daniel • 3 mins ago</span></div><div class="activity-amount up">+₦50,000</div></div>
+<div class="activity-item"><div class="activity-icon" style="background:rgba(242,201,76,.1);color:#f2cf61"><i class="fa-solid fa-clock"></i></div><div class="activity-info"><strong>Withdrawal pending</strong><span>Michael Smith • 8 mins ago</span></div><div class="activity-amount">₦120,000</div></div>
+<div class="activity-item"><div class="activity-icon" style="background:rgba(109,168,255,.1);color:#76afff"><i class="fa-solid fa-user-plus"></i></div><div class="activity-info"><strong>New user registered</strong><span>Chukwu David • 12 mins ago</span></div></div>
+<div class="activity-item"><div class="activity-icon" style="background:rgba(167,139,250,.1);color:#a78bfa"><i class="fa-solid fa-chart-line"></i></div><div class="activity-info"><strong>Investment created</strong><span>Sarah Johnson • 17 mins ago</span></div><div class="activity-amount">₦250,000</div></div>
+</div></div></div>
+
+<div class="card table-card"><div class="card-header"><div><h3>Pending Transactions</h3><span>Transactions requiring admin attention</span></div><button class="btn btn-secondary" onclick="openSection('withdrawals')">View All</button></div>
+<div class="table-wrap"><table id="pendingTable"><thead><tr><th>User</th><th>Type</th><th>Amount</th><th>Reference</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody>
+<tr data-ref="WD-893472"><td><div class="user-cell"><div class="user-avatar">OD</div><div class="user-name"><strong>Okereke Daniel</strong><span>USR-10482</span></div></div></td><td>Withdrawal</td><td>₦150,000</td><td>WD-893472</td><td>Oct 06, 2026</td><td><span class="status pending">Pending</span></td><td><div class="actions"><button class="small-btn approve" onclick="approveTransaction('WD-893472',this)"><i class="fa-solid fa-check"></i></button><button class="small-btn reject" onclick="rejectTransaction('WD-893472',this)"><i class="fa-solid fa-xmark"></i></button></div></td></tr>
+<tr data-ref="DP-728391"><td><div class="user-cell"><div class="user-avatar">MS</div><div class="user-name"><strong>Michael Smith</strong><span>USR-10475</span></div></div></td><td>Deposit</td><td>₦300,000</td><td>DP-728391</td><td>Oct 06, 2026</td><td><span class="status pending">Pending</span></td><td><div class="actions"><button class="small-btn approve" onclick="approveTransaction('DP-728391',this)"><i class="fa-solid fa-check"></i></button><button class="small-btn reject" onclick="rejectTransaction('DP-728391',this)"><i class="fa-solid fa-xmark"></i></button></div></td></tr>
+</tbody></table></div></div>
+</section>
+
+<section class="section" id="users"><div class="welcome"><h2>Users</h2><p>View and manage all registered users.</p></div><div class="card table-card"><div class="table-tools"><div class="search-box"><i class="fa-solid fa-search"></i><input type="text" placeholder="Search by name, email or user ID..." oninput="searchTable(this,'usersTable')"></div><select class="filter-select" onchange="filterUsers(this.value)"><option>All Users</option><option>Active</option><option>Deactivated</option></select><button class="btn btn-primary" onclick="openCreditModal()">+ Add Funds</button></div>
+<div class="table-wrap"><table id="usersTable"><thead><tr><th>User</th><th>Email</th><th>Balance</th><th>Invested</th><th>Referrals</th><th>Status</th><th>Action</th></tr></thead><tbody>
+<tr data-status="Active"><td><div class="user-cell"><div class="user-avatar">OD</div><div class="user-name"><strong>Okereke Daniel</strong><span>USR-10482</span></div></div></td><td>daniel@example.com</td><td class="balance">₦420,000</td><td>₦850,000</td><td>17</td><td><span class="status active">Active</span></td><td><div class="actions"><button class="small-btn" onclick="viewUser('Okereke Daniel')"><i class="fa-solid fa-eye"></i></button><button class="small-btn" onclick="openCreditModal('Okereke Daniel — USR-10482')"><i class="fa-solid fa-wallet"></i></button></div></td></tr>
+<tr data-status="Active"><td><div class="user-cell"><div class="user-avatar">MS</div><div class="user-name"><strong>Michael Smith</strong><span>USR-10475</span></div></div></td><td>michael@example.com</td><td class="balance">₦210,500</td><td>₦500,000</td><td>9</td><td><span class="status active">Active</span></td><td><div class="actions"><button class="small-btn" onclick="viewUser('Michael Smith')"><i class="fa-solid fa-eye"></i></button><button class="small-btn" onclick="openCreditModal('Michael Smith — USR-10475')"><i class="fa-solid fa-wallet"></i></button></div></td></tr>
+<tr data-status="Deactivated"><td><div class="user-cell"><div class="user-avatar">SJ</div><div class="user-name"><strong>Sarah Johnson</strong><span>USR-10461</span></div></div></td><td>sarah@example.com</td><td class="balance">₦80,000</td><td>₦250,000</td><td>4</td><td><span class="status inactive">Deactivated</span></td><td><div class="actions"><button class="small-btn" onclick="viewUser('Sarah Johnson')"><i class="fa-solid fa-eye"></i></button></div></td></tr>
+</tbody></table></div></div></section>
+
+<section class="section" id="deposits"><div class="welcome"><h2>Deposits</h2><p>Review and process user deposit requests.</p></div><div class="card table-card"><div class="table-tools"><div class="search-box"><i class="fa-solid fa-search"></i><input type="text" placeholder="Search deposits..." oninput="searchSectionTable(this,'depositsTable')"></div><select class="filter-select"><option>All Status</option><option>Pending</option><option>Approved</option><option>Rejected</option></select></div><div class="table-wrap"><table id="depositsTable"><thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Reference</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody><tr><td>Michael Smith</td><td>₦300,000</td><td>Bank Transfer</td><td>DP-728391</td><td>Oct 06, 2026</td><td><span class="status pending">Pending</span></td><td><div class="actions"><button class="small-btn approve" onclick="approveTransaction('DP-728391',this)"><i class="fa-solid fa-check"></i></button><button class="small-btn reject" onclick="rejectTransaction('DP-728391',this)"><i class="fa-solid fa-xmark"></i></button><button class="small-btn" onclick="viewTransaction('DP-728391')"><i class="fa-solid fa-eye"></i></button></div></td></tr></tbody></table></div></div></section>
+
+<section class="section" id="withdrawals"><div class="welcome"><h2>Withdrawals</h2><p>Approve or reject withdrawal requests.</p></div><div class="card table-card"><div class="table-tools"><div class="search-box"><i class="fa-solid fa-search"></i><input type="text" placeholder="Search withdrawals..." oninput="searchSectionTable(this,'withdrawalsTable')"></div><select class="filter-select"><option>All Status</option><option>Pending</option><option>Approved</option><option>Rejected</option></select></div><div class="table-wrap"><table id="withdrawalsTable"><thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Reference</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody>
+<tr><td>Okereke Daniel</td><td>₦150,000</td><td>Bank Transfer</td><td>WD-893472</td><td>Oct 06, 2026</td><td><span class="status pending">Pending</span></td><td><div class="actions"><button class="small-btn approve" onclick="approveTransaction('WD-893472',this)"><i class="fa-solid fa-check"></i></button><button class="small-btn reject" onclick="rejectTransaction('WD-893472',this)"><i class="fa-solid fa-xmark"></i></button><button class="small-btn" onclick="viewTransaction('WD-893472')"><i class="fa-solid fa-eye"></i></button></div></td></tr>
+<tr><td>Chukwu David</td><td>₦75,000</td><td>Bank Transfer</td><td>WD-893440</td><td>Oct 06, 2026</td><td><span class="status pending">Pending</span></td><td><div class="actions"><button class="small-btn approve" onclick="approveTransaction('WD-893440',this)"><i class="fa-solid fa-check"></i></button><button class="small-btn reject" onclick="rejectTransaction('WD-893440',this)"><i class="fa-solid fa-xmark"></i></button></div></td></tr>
+</tbody></table></div></div></section>
+
+<section class="section" id="investments"><div class="welcome"><h2>Investment Plans</h2><p>Create and manage the investment plans available to users.</p></div><div class="plans">
+<div class="plan-card"><span class="status active">Active</span><h3 style="margin-top:12px">Starter Plan</h3><div class="plan-roi">8%</div><div class="plan-row"><span>Minimum</span><strong>₦10,000</strong></div><div class="plan-row"><span>Maximum</span><strong>₦100,000</strong></div><div class="plan-row"><span>Duration</span><strong>30 Days</strong></div><button class="btn btn-secondary" style="width:100%;margin-top:15px" onclick="editPlan('Starter Plan')">Edit Plan</button></div>
+<div class="plan-card"><span class="status active">Active</span><h3 style="margin-top:12px">Growth Plan</h3><div class="plan-roi">15%</div><div class="plan-row"><span>Minimum</span><strong>₦100,000</strong></div><div class="plan-row"><span>Maximum</span><strong>₦1,000,000</strong></div><div class="plan-row"><span>Duration</span><strong>60 Days</strong></div><button class="btn btn-secondary" style="width:100%;margin-top:15px" onclick="editPlan('Growth Plan')">Edit Plan</button></div>
+<div class="plan-card"><span class="status active">Active</span><h3 style="margin-top:12px">Premium Plan</h3><div class="plan-roi">25%</div><div class="plan-row"><span>Minimum</span><strong>₦1,000,000</strong></div><div class="plan-row"><span>Maximum</span><strong>₦10,000,000</strong></div><div class="plan-row"><span>Duration</span><strong>90 Days</strong></div><button class="btn btn-secondary" style="width:100%;margin-top:15px" onclick="editPlan('Premium Plan')">Edit Plan</button></div>
+</div></section>
+
+<section class="section" id="active"><div class="welcome"><h2>Active Investments</h2><p>Monitor all currently running investments.</p></div><div class="card table-card"><div class="table-tools"><div class="search-box"><i class="fa-solid fa-search"></i><input type="text" placeholder="Search active investments..." oninput="searchSectionTable(this,'activeTable')"></div></div><div class="table-wrap"><table id="activeTable"><thead><tr><th>Investor</th><th>Plan</th><th>Amount</th><th>Expected Return</th><th>Progress</th><th>End Date</th><th>Status</th></tr></thead><tbody><tr><td>Okereke Daniel</td><td>Growth Plan</td><td>₦850,000</td><td>₦977,500</td><td style="min-width:150px"><div style="background:#241f12;height:6px;border-radius:10px;overflow:hidden"><div style="width:68%;height:100%;background:linear-gradient(90deg,#9c7620,#f2cf61)"></div></div><small style="color:#8b806c;font-size:8px">68%</small></td><td>Nov 20, 2026</td><td><span class="status active">Active</span></td></tr></tbody></table></div></div></section>
+
+<section class="section" id="transactions"><div class="welcome"><h2>Transaction Ledger</h2><p>Complete financial activity across the platform.</p></div><div class="card table-card"><div class="table-tools"><div class="search-box"><i class="fa-solid fa-search"></i><input type="text" placeholder="Search transaction ID or user..." oninput="searchSectionTable(this,'transactionsTable')"></div><select class="filter-select"><option>All Types</option><option>Deposit</option><option>Withdrawal</option><option>Investment</option><option>Referral Bonus</option><option>Admin Credit</option></select></div><div class="table-wrap"><table id="transactionsTable"><thead><tr><th>Transaction ID</th><th>User</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody><tr><td>TXN-893472</td><td>Okereke Daniel</td><td>Deposit</td><td class="up">+₦50,000</td><td><span class="status approved">Completed</span></td><td>Oct 06, 2026</td></tr><tr><td>TXN-893420</td><td>Sarah Johnson</td><td>Investment</td><td>₦250,000</td><td><span class="status active">Active</span></td><td>Oct 05, 2026</td></tr></tbody></table></div></div></section>
+
+<section class="section" id="referrals"><div class="welcome"><h2>Referral Center</h2><p>See exactly who referred who and monitor referral rewards.</p></div><div class="referral-grid"><div class="card"><div class="card-header"><div><h3>Referral Tree</h3><span>Network structure</span></div></div><div class="referral-tree"><div class="tree-user"><div class="user-avatar">OD</div><div><strong style="font-size:11px">Okereke Daniel</strong><div style="color:#807664;font-size:9px">17 direct referrals</div></div></div><div class="tree-line"><div class="tree-user"><div class="user-avatar">MS</div><div><strong style="font-size:10px">Michael Smith</strong><div style="color:#807664;font-size:8px">Referred by Daniel</div></div></div><div class="tree-line"><div class="tree-user"><div class="user-avatar">CD</div><div><strong style="font-size:10px">Chukwu David</strong><div style="color:#807664;font-size:8px">Referred by Michael</div></div></div></div><div class="tree-user"><div class="user-avatar">SJ</div><div><strong style="font-size:10px">Sarah Johnson</strong><div style="color:#807664;font-size:8px">Referred by Daniel</div></div></div></div></div></div>
+<div class="card table-card"><div class="card-header"><div><h3>Referral Records</h3><span>Who referred who</span></div></div><div class="table-wrap"><table><thead><tr><th>Referrer</th><th>Referred User</th><th>Bonus</th></tr></thead><tbody><tr><td>Okereke Daniel</td><td>Michael Smith</td><td class="up">₦15,000</td></tr><tr><td>Okereke Daniel</td><td>Sarah Johnson</td><td class="up">₦7,500</td></tr><tr><td>Michael Smith</td><td>Chukwu David</td><td class="up">₦5,000</td></tr></tbody></table></div></div></div></section>
+
+<section class="section" id="notifications"><div class="welcome"><h2>Notifications</h2><p>System and platform notifications.</p></div><div class="card"><div class="activity"><div class="activity-item"><div class="activity-icon" style="background:rgba(242,201,76,.1);color:#f2cf61"><i class="fa-solid fa-wallet"></i></div><div class="activity-info"><strong>New withdrawal request</strong><span>Okereke Daniel requested ₦150,000</span></div><button class="btn btn-primary" onclick="openSection('withdrawals')">Review</button></div><div class="activity-item"><div class="activity-icon" style="background:rgba(39,201,151,.1);color:#42dcb1"><i class="fa-solid fa-arrow-down"></i></div><div class="activity-info"><strong>New deposit submitted</strong><span>Michael Smith submitted ₦300,000</span></div><button class="btn btn-primary" onclick="openSection('deposits')">Review</button></div></div></div></section>
+
+<section class="section" id="audit"><div class="welcome"><h2>Admin Activity</h2><p>Security audit trail for administrative actions.</p></div><div class="card table-card"><div class="table-wrap"><table><thead><tr><th>Admin</th><th>Action</th><th>User</th><th>Details</th><th>Date</th></tr></thead><tbody><tr><td>Administrator</td><td>Approved Deposit</td><td>Okereke Daniel</td><td>₦50,000</td><td>Oct 06, 2026 18:57</td></tr><tr><td>Administrator</td><td>Viewed User</td><td>Michael Smith</td><td>Profile opened</td><td>Oct 06, 2026 18:45</td></tr><tr><td>Administrator</td><td>Rejected Withdrawal</td><td>Sarah Johnson</td><td>Insufficient verification</td><td>Oct 06, 2026 18:31</td></tr></tbody></table></div></div></section>
+
+<section class="section" id="settings"><div class="welcome"><h2>Admin Settings</h2><p>Configure your Finriseassets investment platform.</p></div><div class="card"><div class="card-header"><div><h3>Platform Settings</h3><span>General configuration</span></div></div><div style="padding:20px;max-width:700px"><div class="form-group"><label>Platform Name</label><input id="platformName" value="Finriseassets"></div><div class="form-group"><label>Currency</label><select id="currency"><option>NGN — Nigerian Naira</option><option>USD — US Dollar</option><option>GBP — British Pound</option></select></div><div class="form-group"><label>Minimum Deposit</label><input value="₦5,000"></div><div class="form-group"><label>Minimum Withdrawal</label><input value="₦10,000"></div><div class="form-group"><label>Referral Bonus</label><input value="5%"></div><button class="btn btn-primary" onclick="saveSettings()">Save Settings</button></div></div></section>
+
+</div>
+</main>
+
+<div class="modal" id="creditModal"><div class="modal-box"><div class="modal-header"><h3>Add Funds to User</h3><button class="close-modal" onclick="closeModal()">×</button></div><div class="modal-body"><div class="form-group"><label>User</label><select id="creditUser"><option>Okereke Daniel — USR-10482</option><option>Michael Smith — USR-10475</option><option>Sarah Johnson — USR-10461</option></select></div><div class="form-group"><label>Amount</label><input id="creditAmount" type="number" min="1" placeholder="Enter amount"></div><div class="form-group"><label>Reason</label><textarea id="creditReason" rows="3" placeholder="Reason for adding funds..."></textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="addFunds()">Add Funds</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const menuItems=document.querySelectorAll(".menu-item[data-section]");
+const sections=document.querySelectorAll(".section");
+const pageNames={dashboard:"Dashboard",users:"Users",deposits:"Deposits",withdrawals:"Withdrawals",investments:"Investment Plans",active:"Active Investments",transactions:"Transactions",referrals:"Referral Center",notifications:"Notifications",audit:"Admin Activity",settings:"Settings"};
+menuItems.forEach(item=>item.addEventListener("click",()=>{openSection(item.dataset.section);document.getElementById("sidebar").classList.remove("open")}));
+function openSection(name){sections.forEach(s=>s.classList.remove("active"));const target=document.getElementById(name);if(target)target.classList.add("active");menuItems.forEach(i=>i.classList.toggle("active",i.dataset.section===name));document.getElementById("pageTitle").textContent=pageNames[name]||"Admin Dashboard";window.scrollTo({top:0,behavior:"smooth"})}
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+let toastTimer;
+function showToast(message){const t=document.getElementById("toast");t.textContent=message;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),3000)}
+function refreshDashboard(){showToast("Dashboard refreshed successfully")}
+function approveTransaction(ref,button){
+ if(!confirm("Approve transaction "+ref+"?"))return;
+ const row=button.closest("tr");const status=row?.querySelector(".status");if(status){status.textContent="Approved";status.className="status approved"}
+ document.querySelectorAll("[data-ref='"+ref+"'] .status").forEach(s=>{s.textContent="Approved";s.className="status approved"});
+ if(button){button.disabled=true;button.nextElementSibling?.remove();button.remove()}
+ showToast("Transaction "+ref+" approved.")
+}
+function rejectTransaction(ref,button){
+ const reason=prompt("Enter rejection reason:");if(!reason||!reason.trim())return;
+ const row=button.closest("tr");const status=row?.querySelector(".status");if(status){status.textContent="Rejected";status.className="status rejected"}
+ document.querySelectorAll("[data-ref='"+ref+"'] .status").forEach(s=>{s.textContent="Rejected";s.className="status rejected"});
+ if(button){button.disabled=true;button.previousElementSibling?.remove();button.remove()}
+ showToast("Transaction "+ref+" rejected.")
+}
+function viewUser(name){showToast("User profile selected: "+name)}
+function viewTransaction(ref){showToast("Transaction "+ref+" selected")}
+function openCreditModal(user){
+ const modal=document.getElementById("creditModal");modal.classList.add("show");
+ if(user)document.getElementById("creditUser").value=user;
+ setTimeout(()=>document.getElementById("creditAmount").focus(),100)
+}
+function closeModal(){document.getElementById("creditModal").classList.remove("show")}
+function addFunds(){
+ const amount=Number(document.getElementById("creditAmount").value);const reason=document.getElementById("creditReason").value.trim();const user=document.getElementById("creditUser").value;
+ if(!amount||amount<=0){alert("Enter a valid amount.");return}
+ if(!reason){alert("Enter a reason for the credit.");return}
+ closeModal();document.getElementById("creditAmount").value="";document.getElementById("creditReason").value="";
+ showToast("₦"+amount.toLocaleString()+" credited to "+user.split(" — ")[0]+".")
+}
+function searchTable(input,id){searchSectionTable(input,id)}
+function searchSectionTable(input,id){const value=input.value.toLowerCase();const table=document.getElementById(id);if(!table)return;table.querySelectorAll("tbody tr").forEach(row=>row.style.display=row.innerText.toLowerCase().includes(value)?"":"none")}
+function filterUsers(value){document.querySelectorAll("#usersTable tbody tr").forEach(row=>{row.style.display=value==="All Users"||row.dataset.status===value?"":"none"})}
+function editPlan(name){showToast(name+" selected for editing. Connect this action to your backend to save changes.")}
+function saveSettings(){localStorage.setItem("finriseassets_platform_name",document.getElementById("platformName").value.trim()||"Finriseassets");showToast("Settings saved successfully")}
+function logout(){if(!confirm("Are you sure you want to logout?"))return;localStorage.removeItem("adminToken");showToast("Logged out successfully")}
+document.getElementById("creditModal").addEventListener("click",e=>{if(e.target===e.currentTarget)closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/admin/admin-backend.js"></script>
+<script src="/admin/pwa-register.js" defer></script>
+</body>
+</html>

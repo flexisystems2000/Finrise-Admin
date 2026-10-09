@@ -1,0 +1,40 @@
+{
+  "id": "/admin/",
+  "name": "Finrise Assets Admin Center",
+  "short_name": "Finrise Admin",
+  "description": "Secure administrative dashboard for Finrise Assets.",
+  "start_url": "/admin/admin-login.html",
+  "scope": "/admin/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "any",
+  "background_color": "#050505",
+  "theme_color": "#0b0b0b",
+  "categories": [
+    "finance",
+    "business"
+  ],
+  "icons": [
+    {
+      "src": "/admin/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/admin/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/admin/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
