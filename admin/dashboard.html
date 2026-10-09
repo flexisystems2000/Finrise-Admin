@@ -86,11 +86,11 @@ td{padding:14px 20px;border-top:1px solid rgba(255,255,255,.045);font-size:11px;
 @media(max-width:800px){.sidebar{transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:grid;place-items:center;margin-right:10px}.topbar{padding:0 15px}.content{padding:18px 14px}.stats-grid{grid-template-columns:1fr 1fr;gap:10px}.stat-card{padding:14px}.stat-value{font-size:17px}.referral-grid,.plans{grid-template-columns:1fr}.page-title h1{font-size:16px}.page-title p{display:none}.table-tools{flex-wrap:wrap}.search-box{flex-basis:100%}}
 @media(max-width:480px){.stats-grid{grid-template-columns:1fr}.welcome h2{font-size:20px}}
 </style>
-<link rel="manifest" href="/admin/manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b0b0b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="/admin/icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
 
@@ -242,7 +242,7 @@ document.getElementById("creditModal").addEventListener("click",e=>{if(e.target=
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/admin/admin-backend.js"></script>
-<script src="/admin/pwa-register.js" defer></script>
+<script src="admin-backend.js"></script>
+<script src="pwa-register.js" defer></script>
 </body>
 </html>
