@@ -22,9 +22,12 @@ Deno.serve(async(req)=>{if(req.method==="OPTIONS")return new Response("ok",{head
  if(action==="transaction-action"){
   const {type,decision,id,reason}=body;if(!id||!['deposit','withdrawal'].includes(type))return reply({error:"Invalid transaction request"},400);let rpc;
   if(type==='deposit'&&decision==='approve')rpc='admin_approve_deposit';else if(type==='deposit'&&decision==='reject')rpc='admin_reject_deposit';else if(type==='withdrawal'&&decision==='complete')rpc='admin_complete_withdrawal';else if(type==='withdrawal'&&decision==='reject')rpc='admin_reject_withdrawal';else return reply({error:"Unsupported action"},400);
-  const arg=type==='deposit'?{p_deposit_id:id}:{p_withdrawal_id:id};const result=await admin.rpc(rpc,arg);if(result.error)throw result.error;
-  // Existing SQL RPC functions provide financial state changes and audit logging. Record reason separately only if schema/RPC supports it.
-  return reply({ok:true,result:result.data??null});
+  const arg=type==='deposit'?{p_deposit_id:id}:{p_withdrawal_id:id};
+  // These SQL routines validate is_admin(auth.uid()); invoke with the signed-in user's JWT.
+  const result=await userClient.rpc(rpc,arg);
+  if(result.error)throw result.error;
+  if(result.data !== true)throw new Error('The transaction action was not confirmed by the database. Refresh and check its status.');
+  return reply({ok:true,result:true});
  }
  if(action==='settings-get')return reply({settings:{platform_name:'Finriseassets'}});
  return reply({error:'Unknown action'},400);
