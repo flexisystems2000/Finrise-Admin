@@ -1,1 +1,1 @@
-if ('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('/admin/service-worker.js',{scope:'/admin/'}).catch(e=>console.error('PWA registration failed',e)));
+if ('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js',{scope:'./'}).catch(e=>console.error('PWA registration failed',e)));
